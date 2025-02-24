@@ -15,20 +15,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientPlayNetworkHandler.class)
 public class ClientPlayNetworkHandlerMixin {
 
-	@Shadow
-	private ClientWorld world;
+    @Shadow
+    private ClientWorld world;
 
-	@Inject(
-		method = "onEntityPassengersSet(Lnet/minecraft/network/packet/s2c/play/EntityPassengersSetS2CPacket;)V",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/client/gui/hud/InGameHud;setOverlayMessage(Lnet/minecraft/text/Text;Z)V",
-			shift = At.Shift.AFTER
-		)
-	)
-	private void checkBoatEntry(EntityPassengersSetS2CPacket packet, CallbackInfo info) {
-	    if (!(world.getEntityById(packet.getId()) instanceof BoatEntity)) return;
-		Common.ridingBoat = true;
-		Common.hudData = new HudData();
-	}
+    @Inject(
+            method = "onEntityPassengersSet(Lnet/minecraft/network/packet/s2c/play/EntityPassengersSetS2CPacket;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/hud/InGameHud;setOverlayMessage(Lnet/minecraft/text/Text;Z)V",
+                    shift = At.Shift.AFTER
+            )
+    )
+    private void checkBoatEntry(EntityPassengersSetS2CPacket packet, CallbackInfo info) {
+        if (!(world.getEntityById(packet.getEntityId()) instanceof BoatEntity)) return;
+        Common.ridingBoat = true;
+        Common.hudData = new HudData();
+    }
 }

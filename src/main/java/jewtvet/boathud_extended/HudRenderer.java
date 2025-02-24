@@ -3,6 +3,7 @@ package jewtvet.boathud_extended;
 import com.mojang.blaze3d.systems.RenderSystem;
 import java.util.Iterator;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 
 public class HudRenderer {
@@ -72,20 +73,20 @@ public class HudRenderer {
     }
 
     private static void drawBackground(DrawContext context, int x, int y) {
-        context.drawTexture(WIDGETS_TEXTURE, x - getTextureWidth() / 2, y - 20, 0, getTextureOffset(), getTextureWidth(), 26);
+        context.drawTexture(RenderLayer::getGuiTextured, WIDGETS_TEXTURE, x - getTextureWidth() / 2, y - 20, 0, getTextureOffset(), getTextureWidth(), 26, 256, 256);
     }
 
     private static void drawSpeedBar(DrawContext context, int x, int y) {
-        context.drawTexture(WIDGETS_TEXTURE, x - getTextureWidth() / 2, y - 20, 0, 26 + getTextureOffset() + BAR_OFF[Config.barType], getTextureWidth(), 5);
+        context.drawTexture(RenderLayer::getGuiTextured, WIDGETS_TEXTURE, x - getTextureWidth() / 2, y - 20, 0, 26 + getTextureOffset() + BAR_OFF[Config.barType], getTextureWidth(), 5, 256, 256);
         if (!(Common.hudData.speed < MIN_V[Config.barType])) {
             if (Common.hudData.speed > MAX_V[Config.barType]) {
                  assert Common.client.world != null;
                  if (Common.client.world.getTime() % 2 == 0) {
-                    context.drawTexture(WIDGETS_TEXTURE, x - getTextureWidth() / 2, y - 20, 0, 26 + getTextureOffset() + BAR_ON[Config.barType], getTextureWidth(), 5);
+                    context.drawTexture(RenderLayer::getGuiTextured, WIDGETS_TEXTURE, x - getTextureWidth() / 2, y - 20, 0, 26 + getTextureOffset() + BAR_ON[Config.barType], getTextureWidth(), 5, 256, 256);
                 }
 
             } else {
-                context.drawTexture(WIDGETS_TEXTURE, x - getTextureWidth() / 2, y - 20, 0, 26 + getTextureOffset() + BAR_ON[Config.barType], getBarLength(), 5);
+                context.drawTexture(RenderLayer::getGuiTextured, WIDGETS_TEXTURE, x - getTextureWidth() / 2, y - 20, 0, 26 + getTextureOffset() + BAR_ON[Config.barType], getBarLength(), 5, 256, 256);
             }
         }
     }
@@ -103,8 +104,8 @@ public class HudRenderer {
     }
 
     private static void drawGMeter(DrawContext context, int x, int y) {
-        context.drawTexture(WIDGETS_TEXTURE, x - 9, y - 14, 218, 0, 18, 18);
-        context.drawTexture(WIDGETS_TEXTURE, x - 1 + getGPosition(Common.hudData.gLat), y - 6 - getGPosition(Common.hudData.gLon), getGColour(), 0, 2, 2);
+        context.drawTexture(RenderLayer::getGuiTextured, WIDGETS_TEXTURE, x - 9, y - 14, 218, 0, 18, 18, 256, 256);
+        context.drawTexture(RenderLayer::getGuiTextured, WIDGETS_TEXTURE, x - 1 + getGPosition(Common.hudData.gLat), y - 6 - getGPosition(Common.hudData.gLon), getGColour(), 0, 2, 2, 256, 256);
     }
 
     private static int getGPosition(double g) {
@@ -178,7 +179,7 @@ public class HudRenderer {
 
         for(Iterator<Double> var4 = Common.hudData.throttleTrace.iterator(); var4.hasNext(); ++i) {
             double throttle = var4.next();
-            context.drawTexture(WIDGETS_TEXTURE, x - 40 + i, y + 4 + getTracePosition(throttle), getThrottleColour(throttle), 0, 1, 1);
+            context.drawTexture(RenderLayer::getGuiTextured, WIDGETS_TEXTURE, x - 40 + i, y + 4 + getTracePosition(throttle), getThrottleColour(throttle), 0, 1, 1, 256, 256);
         }
 
     }
@@ -188,7 +189,7 @@ public class HudRenderer {
 
         for(Iterator<Double> var4 = Common.hudData.steeringTrace.iterator(); var4.hasNext(); ++i) {
             double steering = var4.next();
-            context.drawTexture(WIDGETS_TEXTURE, x + i, y + 4 + getTracePosition(steering), 242, 0, 1, 1);
+            context.drawTexture(RenderLayer::getGuiTextured, WIDGETS_TEXTURE, x + i, y + 4 + getTracePosition(steering), 242, 0, 1, 1, 256, 256);
         }
 
     }
@@ -202,12 +203,12 @@ public class HudRenderer {
     }
 
     private static void drawKeyInputs(DrawContext context, int x, int y) {
-        context.drawTexture(WIDGETS_TEXTURE, x - 21, y, 146, 56, 42, 9);
+        context.drawTexture(RenderLayer::getGuiTextured, WIDGETS_TEXTURE, x - 21, y, 146, 56, 42, 9, 256, 256);
         Boolean[] inputs = new Boolean[] {Common.client.options.leftKey.isPressed(), Common.client.options.backKey.isPressed(), Common.client.options.forwardKey.isPressed(), Common.client.options.rightKey.isPressed()};
 
         for(int i = 0; i < 4; ++i) {
             if (inputs[i]) {
-                context.drawTexture(WIDGETS_TEXTURE, x - 21 + 11 * i, y, 146 + 11 * i, 65, 9, 9);
+                context.drawTexture(RenderLayer::getGuiTextured, WIDGETS_TEXTURE, x - 21 + 11 * i, y, 146 + 11 * i, 65, 9, 9, 256, 256);
             }
         }
 
